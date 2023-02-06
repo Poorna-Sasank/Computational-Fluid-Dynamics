@@ -35,7 +35,7 @@ st = np.linspace(0, t, int(t/dt))
 T = np.zeros(n) # Future Timestep
 T_o = np.zeros(n) # Present Timestep
 
-T_o[1:n-1] = Ti             #IC 
+T_o[1:n-1] = Ti           #IC 
 T_o[0] = 25; T_o[n-1] = 25   #BC
 
 
@@ -57,7 +57,7 @@ fig, (ax1, ax2) = plt.subplots(2)
 ax1.plot(x, df.loc[49, :], 'b', label = 't = 10s')
 ax1.plot(x, df.loc[249, :], 'r', label = 't = 50s')
 ax1.plot(x, df.loc[599, :], 'y', label = 't = 120s')
-ax1.plot(x, T, 'g', label = 't = 200s')
+ax1.plot(x, T, 'g', label = 't = %i s' %t)
 ax1.set_xlabel('length, m')
 ax1.set_ylabel('Temperature, deg C')
 ax1.legend()
