@@ -2,47 +2,57 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import pandas as pd
-# Material properties
+
+#Material Properties
 L = 0.5
 k = 400
 p = 10000
 C = 200
 # BC and IC values
+Ti = 400 #IC
 To = 25 #BC
 Tl = 25 #BC
-Ti = 400 #IC
+
 
 # Grid description
-n = 20
-t = 200
+n = 51         #No. of nodes in space
+t = 200         #Total Simulation time
+
+#Creating a dataframe to store data efficiently
 header=[]
 for i in range(1,n+1):
     header.append("Node: %i" %i)
 df = pd.DataFrame(columns=header)
+
 # Necessary calculations
-dx = L/(n - 1) #grid size for space
-a = k/(p*C)
-dt = 0.2 #grid size for time
+dx = L/(n - 1)
+a = k/(p*C) 
+dt = 0.2
 r = (a * dt)/(pow(dx, 2))
-print(dx, a, dt, r)
 x = np.linspace(0, L, n)
 st = np.linspace(0, t, int(t/dt))
 
-T = np.zeros(n)
-T_o = np.zeros(n)
+T = np.zeros(n) # Future Timestep
+T_o = np.zeros(n) # Present Timestep
 
-T_o[1:n-1] = 400
-T_o[0] = 25; T_o[n-1] = 25
+T_o[1:n-1] = 400             #IC 
+T_o[0] = 25; T_o[n-1] = 25   #BC
+
+
 for k in range(0, int(t/dt)):
     df.loc[len(df.index)] = T_o
     for i in range(1, n - 1):
         T[i] = T_o[i] + r*(T_o[i - 1] - 2*T_o[i] + T_o[i + 1])
     T[0] = 25; T[n-1] = 25
     T_o, T = T, T_o
+    #plt.plot(x, T)
+    #plt.pause(pow(0.1, 50))
+    
   
 print(T)
 print(df)
 
+#Plots
 fig, (ax1, ax2) = plt.subplots(2)
 ax1.plot(x, df.loc[49, :], 'b', label = 't = 10s')
 ax1.plot(x, df.loc[249, :], 'r', label = 't = 50s')
